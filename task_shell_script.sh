@@ -87,28 +87,7 @@ fi
 echo "增加默认脚本更新任务..."
 echo "21 */1 * * * docker_entrypoint.sh >> /AutoSignMachine/logs/default_task.log 2>&1" >>$mergedListFile
 
-echo "判断是否配置自定义shell执行脚本..."
-if [ 0"$CUSTOM_SHELL_FILE" = "0" ]; then
-    echo "未配置自定shell脚本文件，跳过执行。"
-else
-    if expr "$CUSTOM_SHELL_FILE" : 'http.*' &>/dev/null; then
-        echo "自定义shell脚本为远程脚本，开始下在自定义远程脚本。"
-        wget -O /jds/shell_script_mod.sh $CUSTOM_SHELL_FILE
-        echo "下载完成，开始执行..."
-        echo "#远程自定义shell脚本追加定时任务" >>$mergedListFile
-        sh /jds/shell_script_mod.sh
-        echo "自定义远程shell脚本下载并执行结束。"
-    else
-        if [ ! -f $CUSTOM_SHELL_FILE ]; then
-            echo "自定义shell脚本为docker挂载脚本文件，但是指定挂载文件不存在，跳过执行。"
-        else
-            echo "docker挂载的自定shell脚本，开始执行..."
-            echo "#docker挂载自定义shell脚本追加定时任务" >>$mergedListFile
-            sh $CUSTOM_SHELL_FILE
-            echo "docker挂载的自定shell脚本，执行结束。"
-        fi
-    fi
-fi
+
 
 echo "判断是否配置了随即延迟参数..."
 if [ $RANDOM_DELAY_MAX ]; then
