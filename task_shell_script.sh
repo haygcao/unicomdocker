@@ -5,7 +5,7 @@ cd /AutoSignMachine
 git remote set-url origin https://github.com/DJ-clamp/BaseSation.git
 git reset --hard
 git pull --rebase
-git checkout dev
+git checkout azmodan
 npm install --loglevel error --prefix /AutoSignMachine
 
 mergedListFile="/AutoSignMachine/merged_list_file.sh"
