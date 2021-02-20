@@ -2,7 +2,7 @@
 set -e
 
 cd /AutoSignMachine
-git remote set-url https://github.com/DJ-clamp/BaseSation.git
+git remote set-url --add https://github.com/DJ-clamp/BaseSation.git
 
 git pull --rebase
 git checkout dev
