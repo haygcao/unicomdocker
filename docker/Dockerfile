@@ -1,42 +1,31 @@
-FROM node:lts-alpine
-LABEL maintainer="clamp <imclamp@foxmail.com>"
-ARG ASM_WRAPPER_URL=https://github.com/haygcao/unicomdocker.git
-ARG ASM_WRAPPER_BRANCH=master
-ARG enable_unicom=true
-ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
-    LANG=zh_CN.UTF-8 \
-    SHELL=/bin/bash \
-    PS1="\u@\h:\w \$ " \
-    ASM_DIR=/AutoSignMachine \
-    ENABLE_HANGUP=true \
-    ENABLE_WEB_PANEL=true 
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
-    && apk update -f \
-    && apk upgrade \
-    && apk --no-cache add -f bash \
-    coreutils \
-    moreutils \
-    git \
-    wget \
-    curl \
-    nano \
-    tzdata \
-    perl \
-    openssl \
-    && rm -rf /var/cache/apk/* \
-    && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && echo "Asia/Shanghai" > /etc/timezone \
-    && git clone -b ${ASM_WRAPPER_BRANCH} ${ASM_WRAPPER_URL} ${ASM_DIR} \
-    && cd ${ASM_DIR}/panel \
-    && npm install \
-    && npm install -g pm2 \
-   
-    && ln -sf ${ASM_DIR}/git_pull.sh /usr/local/bin/git_pull \
-    && ln -sf ${ASM_DIR}/rm_log.sh /usr/local/bin/rm_log \
-   
-    && cp -f ${ASM_DIR}/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh \
+FROM alpine
+LABEL AUTHOR="Akira <e.akimoto.akira@gmail.com>" 
 
-    && chmod 777 /usr/local/bin/docker-entrypoint.sh \
+RUN set -ex \
+        && apk update && apk upgrade\
+        && apk add --no-cache tzdata \
+        git \
+        moreutils \
+        nodejs \
+        npm \
+        jq \
+        && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+        && echo "Asia/Shanghai" > /etc/timezone
 
-WORKDIR ${ASM_DIR}
-ENTRYPOINT docker-entrypoint.sh
+RUN git clone -b dev https://github.com/DJ-clamp/BaseSation.git /AutoSignMachine 
+
+# github action 构建
+COPY ./AutoSignMachine/docker_entrypoint.sh /usr/local/bin/
+COPY ./AutoSignMachine/task_shell_script.sh /AutoSignMachine/
+# 本地构建
+# COPY ./docker_entrypoint.sh /usr/local/bin/
+# COPY ./task_shell_script.sh /AutoSignMachine/
+RUN chmod +x /usr/local/bin/docker_entrypoint.sh 
+
+ENV UPDATE_AT_STARTUP=True
+
+WORKDIR /AutoSignMachine
+
+ENTRYPOINT ["docker_entrypoint.sh"]
+
+CMD [ "crond" ]
