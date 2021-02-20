@@ -27,7 +27,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone \
     && git clone -b ${ASM_WRAPPER_BRANCH} ${ASM_WRAPPER_URL} ${ASM_DIR} \
-    && cp -f ${ASM_DIR}/task_shell_script.sh /usr/local/bin/task_shell_script.sh \
+    
     && git clone -b ${ASM_SCRIPTS_BRANCH} ${ASM_SCRIPTS_URL} ${ASM_DIR}/scripts \
     && cd ${ASM_DIR}/scripts \
     && npm install \
