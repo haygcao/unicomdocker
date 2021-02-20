@@ -1,11 +1,25 @@
 #!/bin/sh
 set -e
+ScriptsDir=/AutoSignMachine
+ScriptsURL=https://github.com/DJ-clamp/BaseSation
+## 克隆scripts
+function Git_CloneScripts {
+  git clone -b dev ${ScriptsURL} ${ScriptsDir}
+  ExitStatusScripts=$?
+  echo
+}
 
-cd /AutoSignMachine
-git https://github.com/DJ-clamp/BaseSation.git
+## 更新scripts
+function Git_PullScripts {
+  cd ${ScriptsDir}
+  git fetch --all
+  ExitStatusScripts=$?
+  git reset --hard origin/dev
+  echo
+}
 
-git pull --rebase
-git checkout dev
+  
+git pull
 npm install --loglevel error --prefix /AutoSignMachine
 
 mergedListFile="/AutoSignMachine/merged_list_file.sh"
