@@ -2,7 +2,7 @@
 set -e
 
 cd /AutoSignMachine
-git ttps://github.com/DJ-clamp/BaseSation.git
+git https://github.com/DJ-clamp/BaseSation.git
 
 git pull --rebase
 git checkout dev
