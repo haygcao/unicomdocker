@@ -1,3 +1,10 @@
+# 打包 AutoSignMachine 签到脚本
+- ### AutoSignMachine 作者：[__@lunnlew__](https://github.com/lunnlew)｜[__仓库地址__](https://github.com/lunnlew/AutoSignMachine/)
+
+
+
+docker-compose 参考
+```
 autoSign:
   image: akyakya/autosign:latest
   container_name: autosign
@@ -18,3 +25,4 @@ autoSign:
     - ENABLE_52POJIE=True
     - htVD_2132_auth=d9bdYfS*********ojcyLOu
     - htVD_2132_saltkey=M*******3
+```
