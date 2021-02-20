@@ -3,7 +3,7 @@ set -e
 
 cd /AutoSignMachine
 git remote set-url https://github.com/DJ-clamp/BaseSation.git
-git reset --hard
+
 git pull --rebase
 git checkout dev
 npm install --loglevel error --prefix /AutoSignMachine
