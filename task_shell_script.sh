@@ -2,10 +2,10 @@
 set -e
 
 cd /AutoSignMachine
-ARG ASM_SCRIPTS_URL=https://github.com/DJ-clamp/BaseSation
-ARG ASM_SCRIPTS_BRANCH=dev
-&& git clone -b ${ASM_WRAPPER_BRANCH} ${ASM_WRAPPER_URL} \
-
+git remote set-url origin https://github.com/DJ-clamp/BaseSation.git
+git reset --hard
+git pull --rebase
+git checkout dev
 npm install --loglevel error --prefix /AutoSignMachine
 
 mergedListFile="/AutoSignMachine/merged_list_file.sh"
